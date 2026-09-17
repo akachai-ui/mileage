@@ -174,212 +174,196 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-24">
-      <div className="max-w-xl mx-auto p-4 md:p-6">
-        
-        {/* Header Section */}
-        <div className="flex justify-between items-center mb-8 pt-4">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center p-2 overflow-hidden">
-              <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">Mileage Tracker</h1>
-              <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mt-0.5">Corporate Edition</p>
-            </div>
+    <main className="max-w-md mx-auto h-screen bg-slate-50 sm:shadow-[0_0_40px_rgba(0,0,0,0.1)] sm:border-x sm:border-slate-200 relative flex flex-col font-sans text-slate-800 overflow-hidden">
+      
+      {/* Mobile App Bar */}
+      <header className="absolute top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-slate-100 px-5 py-4 flex justify-between items-center z-40">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
+            <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
           </div>
-          <div className="flex gap-2">
-            {currentUser && (
-              <Link href="/report" className="text-xs bg-indigo-50 text-indigo-700 px-4 py-2.5 rounded-full font-bold hover:bg-indigo-100 transition shadow-sm border border-indigo-100 flex items-center gap-1">
-                <span>📄</span> Report
-              </Link>
-            )}
-            {!currentUser && (
-              <Link href="/admin" className="text-xs bg-white border border-slate-200 text-slate-600 px-4 py-2.5 rounded-full font-bold hover:bg-slate-50 transition shadow-sm flex items-center gap-1">
-                <span>⚙️</span> Admin
-              </Link>
-            )}
+          <div>
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">Mileage</h1>
+            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Tracker App</p>
           </div>
         </div>
+        {!currentUser && (
+          <Link href="/admin" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition border border-slate-100">
+            ⚙️
+          </Link>
+        )}
+      </header>
+
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto pt-24 pb-28 px-5">
         
-        {/* Status Message */}
+        {/* Toast Message */}
         {statusMsg && (
-          <div className="bg-blue-50 border border-blue-100 text-blue-800 p-4 rounded-2xl mb-6 text-sm font-medium flex items-start gap-3 shadow-sm">
-            <span className="text-lg">ℹ️</span>
-            <p className="pt-0.5">{statusMsg}</p>
+          <div className="bg-indigo-50 border border-indigo-100 text-indigo-800 p-3 rounded-2xl mb-5 text-sm font-medium flex items-center gap-2 shadow-sm">
+            <span className="text-base">ℹ️</span>
+            <p>{statusMsg}</p>
           </div>
         )}
 
         {!currentUser ? (
-          /* Login Box */
-          <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center mt-6 relative overflow-hidden">
-            <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-slate-100">
+          /* Login Screen */
+          <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center mt-4">
+            <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-4xl">🚘</span>
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">เข้าสู่ระบบ</h2>
-            <p className="text-slate-500 text-sm mb-8">กรุณากรอกทะเบียนรถเพื่อเริ่มต้นบันทึกการเดินทาง</p>
+            <p className="text-slate-500 text-sm mb-8">กรอกทะเบียนรถเพื่อเริ่มใช้งาน</p>
             
             <div className="space-y-4">
               <input 
                 type="text" 
                 placeholder="เช่น 1กข 1234" 
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-center text-lg font-bold text-slate-800 outline-none" 
+                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-center text-xl font-bold text-slate-800 outline-none" 
                 value={licensePlate} 
                 onChange={e => setLicensePlate(e.target.value)} 
               />
               <button 
                 onClick={handleLogin} 
                 disabled={isProcessing} 
-                className="w-full bg-slate-900 text-white p-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all disabled:opacity-50 shadow-lg shadow-slate-900/20 active:scale-[0.98]"
+                className="w-full bg-slate-900 text-white p-4 rounded-2xl font-bold text-lg active:scale-95 transition-all disabled:opacity-50 shadow-md"
               >
-                {isProcessing ? 'กำลังตรวจสอบ...' : 'เริ่มต้นใช้งาน (Start)'}
+                {isProcessing ? 'กำลังตรวจสอบ...' : 'เริ่มต้น (Start)'}
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-5">
             
-            {/* Profile Card */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] p-6 text-white shadow-xl shadow-slate-900/20 flex justify-between items-center relative overflow-hidden">
-              <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+            {/* Vehicle Card */}
+            <div className="bg-slate-900 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden">
+              <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
               <div className="relative z-10">
-                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">ทะเบียนรถปัจจุบัน</p>
-                <p className="text-3xl font-bold tracking-tight mb-1">{currentUser.license_plate}</p>
-                <p className="text-indigo-200 text-sm font-medium flex items-center gap-2">
-                  <span>👤</span> {currentUser.driver_name}
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">พาหนะปัจจุบัน</p>
+                <p className="text-3xl font-bold tracking-tight mb-0.5">{currentUser.license_plate}</p>
+                <p className="text-indigo-300 text-sm font-medium flex items-center gap-1.5">
+                  👤 {currentUser.driver_name}
                 </p>
               </div>
-              <button onClick={handleLogout} className="relative z-10 bg-white/10 hover:bg-white/20 p-3.5 rounded-2xl backdrop-blur-md transition border border-white/10">
-                <span className="text-sm font-bold">🚪 ออก</span>
-              </button>
             </div>
 
             {!currentTripId ? (
               /* 1. Start Trip */
-              <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-black text-xl">1</div>
-                  <div>
-                    <h2 className="text-xl font-bold text-slate-900">เริ่มทริปใหม่</h2>
-                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Start New Trip</p>
-                  </div>
+              <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center font-black text-lg">1</div>
+                  <h2 className="text-lg font-bold text-slate-900">เริ่มทริปใหม่</h2>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-5">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">เลขไมล์ตอนเริ่ม</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1">เลขไมล์ตอนเริ่ม</label>
                     <input 
                       type="number" 
-                      placeholder="กรอกตัวเลขไมล์ปัจจุบัน" 
-                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none font-bold text-lg transition-all" 
+                      placeholder="000000" 
+                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none font-bold text-xl transition-all" 
                       value={startMileage} 
                       onChange={e => setStartMileage(e.target.value)} 
                     />
                   </div>
                   
-                  <div className="border-2 border-dashed border-slate-200 p-6 rounded-2xl bg-slate-50 text-center hover:bg-indigo-50/50 transition cursor-pointer group">
-                    <label className="block text-sm font-bold text-slate-700 mb-4 cursor-pointer group-hover:text-indigo-700 transition">
-                      📸 ถ่ายรูปหน้าปัดไมล์ (ตอนเริ่ม)
+                  {startImageFile ? (
+                    <div className="flex items-center justify-center w-full h-24 border-2 border-indigo-500 bg-indigo-50 rounded-2xl text-indigo-700 font-bold text-sm shadow-inner" onClick={() => setStartImageFile(null)}>
+                      ✅ เลือกรูปแล้ว (แตะเพื่อเปลี่ยน)
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-2xl text-indigo-600 font-bold active:bg-indigo-100 transition cursor-pointer">
+                      <span className="text-2xl mb-1">📸</span>
+                      <span className="text-sm">ถ่ายรูปหน้าปัดไมล์</span>
+                      <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setStartImageFile(e.target.files[0])} />
                     </label>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      capture="environment" 
-                      onChange={e => setStartImageFile(e.target.files[0])} 
-                      className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 cursor-pointer transition shadow-sm"
-                    />
-                  </div>
+                  )}
 
                   <button 
                     onClick={handleStartTrip} 
-                    disabled={isProcessing} 
-                    className="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
+                    disabled={isProcessing || !startMileage || !startImageFile} 
+                    className="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 disabled:active:scale-100 shadow-md shadow-indigo-200"
                   >
-                    {isProcessing ? 'กำลังประมวลผล...' : '🚗 เริ่มเดินทาง (Go)'}
+                    {isProcessing ? 'ประมวลผล...' : '🚗 เริ่มเดินทาง'}
                   </button>
                 </div>
               </div>
             ) : (
               <>
                 {/* 2. Expenses */}
-                <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-400"></div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center font-black text-xl">2</div>
-                    <div>
-                      <h2 className="text-xl font-bold text-slate-900">ค่าใช้จ่ายระหว่างทาง</h2>
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Additional Expenses</p>
-                    </div>
+                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center font-black text-lg">2</div>
+                    <h2 className="text-lg font-bold text-slate-900">ค่าใช้จ่ายระหว่างทาง</h2>
                   </div>
                   
-                  <div className="space-y-4 bg-slate-50/50 p-5 rounded-2xl border border-slate-100">
-                    <div className="flex gap-3">
-                      <select className="flex-1 p-3.5 border border-slate-200 rounded-xl bg-white focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 outline-none font-bold text-slate-700" value={expenseType} onChange={e => setExpenseType(e.target.value)}>
+                  <div className="space-y-3 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
+                    <div className="flex gap-2">
+                      <select className="flex-1 p-3 border border-slate-200 rounded-xl bg-white outline-none font-bold text-slate-700 text-sm" value={expenseType} onChange={e => setExpenseType(e.target.value)}>
                         <option value="toll">🛣️ ทางด่วน</option>
                         <option value="parking">🅿️ ที่จอดรถ</option>
-                        <option value="reception">🤝 รับรองลูกค้า</option>
+                        <option value="reception">🤝 รับรอง</option>
                       </select>
-                      <input type="number" placeholder="ยอดเงิน (฿)" className="w-1/3 p-3.5 border border-slate-200 rounded-xl bg-white focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 outline-none font-bold text-amber-700" value={expenseAmount} onChange={e => setExpenseAmount(e.target.value)} />
+                      <input type="number" placeholder="ยอดเงิน" className="w-1/3 p-3 border border-slate-200 rounded-xl bg-white outline-none font-bold text-amber-700 text-sm text-center" value={expenseAmount} onChange={e => setExpenseAmount(e.target.value)} />
                     </div>
-                    <input type="text" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)" className="w-full p-3.5 border border-slate-200 rounded-xl bg-white focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 outline-none font-medium" value={expenseDesc} onChange={e => setExpenseDesc(e.target.value)} />
+                    <input type="text" placeholder="รายละเอียด (ถ้ามี)" className="w-full p-3 border border-slate-200 rounded-xl bg-white outline-none text-sm font-medium" value={expenseDesc} onChange={e => setExpenseDesc(e.target.value)} />
                     
-                    <div className="pt-2">
-                      <label className="block text-xs font-bold text-slate-500 mb-3">📸 แนบรูปใบเสร็จ</label>
-                      <input type="file" accept="image/*" capture="environment" onChange={e => setExpenseImageFile(e.target.files[0])} className="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 transition cursor-pointer shadow-sm" />
-                    </div>
+                    {expenseImageFile ? (
+                      <div className="flex items-center justify-center w-full py-3 border-2 border-amber-500 bg-amber-50 rounded-xl text-amber-700 font-bold text-xs" onClick={() => setExpenseImageFile(null)}>
+                        ✅ แนบใบเสร็จแล้ว
+                      </div>
+                    ) : (
+                      <label className="flex items-center justify-center w-full py-3 border-2 border-dashed border-amber-200 bg-amber-50/50 rounded-xl text-amber-600 font-bold text-xs active:bg-amber-100 transition cursor-pointer">
+                        📸 ถ่ายรูปใบเสร็จ
+                        <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setExpenseImageFile(e.target.files[0])} />
+                      </label>
+                    )}
 
-                    <button onClick={handleAddExpense} disabled={isProcessing} className="w-full bg-slate-800 text-white p-3.5 rounded-xl font-bold hover:bg-slate-900 shadow-md mt-4 transition active:scale-[0.98] disabled:opacity-50">
-                      {isProcessing ? 'กำลังประมวลผล...' : '+ เพิ่มค่าใช้จ่าย (Add)'}
+                    <button onClick={handleAddExpense} disabled={isProcessing} className="w-full bg-slate-800 text-white p-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50 mt-1">
+                      {isProcessing ? 'รอสักครู่...' : '+ เพิ่มรายการ'}
                     </button>
                   </div>
                 </div>
 
                 {/* 3. End Trip */}
-                <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center font-black text-xl">3</div>
-                    <div>
-                      <h2 className="text-xl font-bold text-slate-900">จบทริป</h2>
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Finish & Save</p>
-                    </div>
+                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center font-black text-lg">3</div>
+                    <h2 className="text-lg font-bold text-slate-900">จบทริป</h2>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">เลขไมล์ตอนจบ</label>
+                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1">เลขไมล์ตอนจบ</label>
                       <input 
                         type="number" 
-                        placeholder={`ต้องมากกว่า ${startMileage}`} 
-                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-lg font-bold transition-all" 
+                        placeholder={`> ${startMileage}`} 
+                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-xl font-bold transition-all" 
                         value={endMileage} 
                         onChange={e => setEndMileage(e.target.value)} 
                       />
                       {endMileage && Number(endMileage) < Number(startMileage) && (
-                        <p className="text-rose-500 text-sm mt-3 font-bold flex items-center gap-1.5 bg-rose-50 p-3 rounded-xl border border-rose-100 shadow-sm">
-                          <span className="text-lg">⚠️</span> เลขไมล์ต้องมากกว่าตอนเริ่ม ({startMileage})
-                        </p>
+                        <p className="text-rose-500 text-xs mt-2 font-bold flex items-center gap-1 ml-1">⚠️ ต้องมากกว่าตอนเริ่ม ({startMileage})</p>
                       )}
                     </div>
                     
-                    <div className="border-2 border-dashed border-slate-200 p-6 rounded-2xl bg-slate-50 text-center hover:bg-emerald-50/50 transition cursor-pointer group">
-                      <label className="block text-sm font-bold text-slate-700 mb-4 cursor-pointer group-hover:text-emerald-700 transition">📸 ถ่ายรูปหน้าปัดไมล์ (ตอนจบ)</label>
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        capture="environment" 
-                        onChange={e => setEndImageFile(e.target.files[0])} 
-                        className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200 cursor-pointer transition shadow-sm"
-                      />
-                    </div>
+                    {endImageFile ? (
+                      <div className="flex items-center justify-center w-full h-24 border-2 border-emerald-500 bg-emerald-50 rounded-2xl text-emerald-700 font-bold text-sm" onClick={() => setEndImageFile(null)}>
+                        ✅ เลือกรูปแล้ว (แตะเพื่อเปลี่ยน)
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-emerald-200 bg-emerald-50/50 rounded-2xl text-emerald-600 font-bold active:bg-emerald-100 transition cursor-pointer">
+                        <span className="text-2xl mb-1">📸</span>
+                        <span className="text-sm">ถ่ายรูปหน้าปัดไมล์</span>
+                        <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setEndImageFile(e.target.files[0])} />
+                      </label>
+                    )}
 
                     <button 
                       onClick={handleEndTrip} 
                       disabled={isProcessing || !endMileage || !endImageFile || Number(endMileage) < Number(startMileage)} 
-                      className="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold text-lg hover:bg-emerald-700 shadow-lg shadow-emerald-600/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:bg-slate-300 disabled:shadow-none disabled:active:scale-100"
+                      className="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 disabled:bg-slate-300 disabled:active:scale-100 shadow-md shadow-emerald-200"
                     >
-                      {isProcessing ? 'กำลังบันทึก...' : '🏁 บันทึกและจบทริป'}
+                      {isProcessing ? 'บันทึกข้อมูล...' : '🏁 จบทริป'}
                     </button>
                   </div>
                 </div>
@@ -388,6 +372,25 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Bottom Navigation Bar */}
+      {currentUser && (
+        <nav className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-6 pt-3 pb-6 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
+          <button className="flex flex-col items-center text-indigo-600 transition active:scale-95">
+            <span className="text-2xl mb-1">🚗</span>
+            <span className="text-[10px] font-bold">บันทึกทริป</span>
+          </button>
+          <Link href="/report" className="flex flex-col items-center text-slate-400 hover:text-indigo-500 transition active:scale-95">
+            <span className="text-2xl mb-1">📊</span>
+            <span className="text-[10px] font-bold">รายงาน</span>
+          </Link>
+          <button onClick={handleLogout} className="flex flex-col items-center text-slate-400 hover:text-rose-500 transition active:scale-95">
+            <span className="text-2xl mb-1">🚪</span>
+            <span className="text-[10px] font-bold">ออกระบบ</span>
+          </button>
+        </nav>
+      )}
+
     </main>
   );
 }
