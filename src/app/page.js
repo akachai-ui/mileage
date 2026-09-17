@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { loginVehicle, startTrip, endTrip, addExpense, uploadImage, getActiveTrip } from '@/lib/mileageService';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
+import BottomNav from '@/components/BottomNav';
 
 export default function Home() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
@@ -176,26 +178,25 @@ export default function Home() {
   return (
     <main className="max-w-md mx-auto h-screen bg-slate-50 sm:shadow-[0_0_40px_rgba(0,0,0,0.1)] sm:border-x sm:border-slate-200 relative flex flex-col font-sans text-slate-800 overflow-hidden">
       
-      {/* Mobile App Bar */}
-      <header className="absolute top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-slate-100 px-5 py-4 flex justify-between items-center z-40">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
-            <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">Mileage</h1>
-            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Tracker App</p>
-          </div>
-        </div>
-        {!currentUser && (
-          <Link href="/admin" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition border border-slate-100">
-            ⚙️
-          </Link>
-        )}
-      </header>
+      {/* Unified App Bar */}
+      <AppHeader 
+        title="Mileage" 
+        subtitle="Tracker App" 
+        rightAction={
+          currentUser ? (
+            <button onClick={handleLogout} className="px-3 py-1 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-full text-xs font-bold transition flex items-center gap-1 border border-slate-200">
+              🚪 ออก
+            </button>
+          ) : (
+            <Link href="/admin" className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition border border-slate-200 text-sm">
+              ⚙️
+            </Link>
+          )
+        } 
+      />
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto pt-24 pb-28 px-5">
+      <div className="flex-1 overflow-y-auto pt-6 pb-28 px-5">
         
         {/* Toast Message */}
         {statusMsg && (
@@ -374,22 +375,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Navigation Bar */}
-      {currentUser && (
-        <nav className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-6 pt-3 pb-6 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-          <button className="flex flex-col items-center text-indigo-600 transition active:scale-95">
-            <span className="text-2xl mb-1">🚗</span>
-            <span className="text-[10px] font-bold">บันทึกทริป</span>
-          </button>
-          <Link href="/report" className="flex flex-col items-center text-slate-400 hover:text-indigo-500 transition active:scale-95">
-            <span className="text-2xl mb-1">📊</span>
-            <span className="text-[10px] font-bold">รายงาน</span>
-          </Link>
-          <button onClick={handleLogout} className="flex flex-col items-center text-slate-400 hover:text-rose-500 transition active:scale-95">
-            <span className="text-2xl mb-1">🚪</span>
-            <span className="text-[10px] font-bold">ออกระบบ</span>
-          </button>
-        </nav>
-      )}
+      <BottomNav />
 
     </main>
   );

@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { registerVehicle, getAllUsers } from '@/lib/mileageService';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
+import BottomNav from '@/components/BottomNav';
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -45,24 +47,19 @@ export default function AdminPage() {
   return (
     <main className="max-w-md mx-auto h-screen bg-slate-50 sm:shadow-[0_0_40px_rgba(0,0,0,0.1)] sm:border-x sm:border-slate-200 relative flex flex-col font-sans text-slate-800 overflow-hidden">
       
-      {/* Mobile App Bar */}
-      <header className="absolute top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-slate-100 px-5 py-4 flex justify-between items-center z-40">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
-            <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">Admin Console</h1>
-            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">User Management</p>
-          </div>
-        </div>
-        <Link href="/" className="px-3.5 py-1.5 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 transition">
-          ← กลับ
-        </Link>
-      </header>
+      {/* Unified App Bar */}
+      <AppHeader 
+        title="Admin" 
+        subtitle="Console" 
+        rightAction={
+          <Link href="/" className="px-3.5 py-1.5 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 transition border border-slate-200">
+            ← กลับ
+          </Link>
+        } 
+      />
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto pt-24 pb-12 px-5 space-y-6">
+      <div className="flex-1 overflow-y-auto pt-6 pb-28 px-5 space-y-6">
         
         {/* ฟอร์มเพิ่มผู้ใช้ */}
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
@@ -155,6 +152,10 @@ export default function AdminPage() {
         </div>
 
       </div>
+
+      {/* Bottom Navigation Bar */}
+      <BottomNav />
+
     </main>
   );
 }
