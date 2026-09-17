@@ -43,59 +43,117 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto p-6 font-sans">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">⚙️ จัดการข้อมูลผู้ใช้ (Admin)</h1>
-        <Link href="/" className="text-sm bg-blue-100 text-blue-700 px-3 py-2 rounded hover:bg-blue-200 font-medium">
-          กลับหน้าแรก
+    <main className="max-w-md mx-auto h-screen bg-slate-50 sm:shadow-[0_0_40px_rgba(0,0,0,0.1)] sm:border-x sm:border-slate-200 relative flex flex-col font-sans text-slate-800 overflow-hidden">
+      
+      {/* Mobile App Bar */}
+      <header className="absolute top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-slate-100 px-5 py-4 flex justify-between items-center z-40">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
+            <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">Admin Console</h1>
+            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">User Management</p>
+          </div>
+        </div>
+        <Link href="/" className="px-3.5 py-1.5 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 transition">
+          ← กลับ
         </Link>
-      </div>
+      </header>
 
-      {/* ฟอร์มเพิ่มผู้ใช้ */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border mb-8 text-black">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">เพิ่มรายชื่อรถและเซลส์</h2>
-        <form onSubmit={handleRegister} className="flex flex-col sm:flex-row gap-3">
-          <input 
-            type="text" 
-            placeholder="ทะเบียนรถ (เช่น 1กข 1234)" 
-            className="flex-1 p-2 border rounded" 
-            value={licensePlate} 
-            onChange={e => setLicensePlate(e.target.value)} 
-          />
-          <input 
-            type="text" 
-            placeholder="ชื่อ-นามสกุล คนขับ" 
-            className="flex-1 p-2 border rounded" 
-            value={driverName} 
-            onChange={e => setDriverName(e.target.value)} 
-          />
-          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-            บันทึก
-          </button>
-        </form>
-        {statusMsg && <p className="text-sm text-green-600 mt-3">{statusMsg}</p>}
-      </div>
-
-      {/* รายชื่อผู้ใช้งาน */}
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden text-black">
-        <h2 className="text-lg font-semibold p-4 bg-gray-50 border-b text-gray-700">รายชื่อในระบบ ({users.length} คัน)</h2>
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto pt-24 pb-12 px-5 space-y-6">
         
-        {isLoading ? (
-          <p className="p-6 text-center text-gray-500">กำลังโหลด...</p>
-        ) : users.length === 0 ? (
-          <p className="p-6 text-center text-gray-500">ยังไม่มีข้อมูลในระบบ</p>
-        ) : (
-          <ul className="divide-y">
-            {users.map((user) => (
-              <li key={user.license_plate} className="p-4 flex justify-between items-center hover:bg-gray-50">
-                <div>
-                  <p className="font-bold text-lg text-gray-800">{user.license_plate}</p>
-                  <p className="text-sm text-gray-600">{user.driver_name}</p>
+        {/* ฟอร์มเพิ่มผู้ใช้ */}
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-black text-lg">➕</div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">ลงทะเบียนรถใหม่</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Register Vehicle</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleRegister} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 ml-1">
+                ทะเบียนรถ (License Plate)
+              </label>
+              <input 
+                type="text" 
+                placeholder="เช่น 1กข 1234" 
+                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none font-bold text-slate-800 transition-all text-sm" 
+                value={licensePlate} 
+                onChange={e => setLicensePlate(e.target.value)} 
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 ml-1">
+                ชื่อ-นามสกุล คนขับ (Driver Name)
+              </label>
+              <input 
+                type="text" 
+                placeholder="เช่น นายสมชาย ใจดี" 
+                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none font-medium text-slate-800 transition-all text-sm" 
+                value={driverName} 
+                onChange={e => setDriverName(e.target.value)} 
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              className="w-full bg-slate-900 text-white p-3.5 rounded-2xl font-bold text-sm active:scale-95 transition-transform shadow-md shadow-slate-900/10 hover:bg-slate-800"
+            >
+              + บันทึกข้อมูล (Save)
+            </button>
+          </form>
+
+          {statusMsg && (
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-bold rounded-xl text-center">
+              {statusMsg}
+            </div>
+          )}
+        </div>
+
+        {/* รายชื่อผู้ใช้งาน */}
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+          <div className="flex justify-between items-center mb-5 border-b border-slate-100 pb-3">
+            <div>
+              <h2 className="text-base font-bold text-slate-900">รายชื่อในระบบ</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Fleet</p>
+            </div>
+            <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-black rounded-full">
+              {users.length} คัน
+            </span>
+          </div>
+          
+          {isLoading ? (
+            <p className="py-8 text-center text-slate-400 text-sm font-medium animate-pulse">กำลังโหลด...</p>
+          ) : users.length === 0 ? (
+            <p className="py-8 text-center text-slate-400 text-sm">ยังไม่มีข้อมูลในระบบ</p>
+          ) : (
+            <div className="space-y-3">
+              {users.map((user) => (
+                <div key={user.license_plate} className="p-3.5 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-white rounded-xl shadow-xs flex items-center justify-center text-lg border border-slate-100">
+                      🚘
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 text-sm tracking-tight">{user.license_plate}</p>
+                      <p className="text-xs text-slate-500 font-medium">👤 {user.driver_name}</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-md border border-emerald-100">
+                    Active
+                  </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
+
       </div>
     </main>
   );

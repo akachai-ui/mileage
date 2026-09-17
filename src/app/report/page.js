@@ -81,66 +81,79 @@ export default function ReportPage() {
     <main className="max-w-5xl mx-auto p-4 md:p-8 font-sans text-gray-800">
       
       {/* ส่วนค้นหาและปุ่มควบคุม (ซ่อนตอนพิมพ์) */}
-      <div className="print:hidden mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <div className="print:hidden mb-8 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80">
         <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">📄 ดึงรายงานเบิกจ่าย <span className="text-gray-500 font-normal text-lg">(Fetch Report)</span></h1>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
+              <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">ดึงรายงานเบิกจ่าย</h1>
+              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Expense & Audit Portal</p>
+            </div>
           </div>
-          <Link href="/" className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 border">
-            กลับหน้าแรก (Back)
+          <Link href="/" className="text-xs bg-slate-100 text-slate-700 px-4 py-2.5 rounded-full font-bold hover:bg-slate-200 border border-slate-200 transition">
+            ← กลับหน้าแรก
           </Link>
         </div>
-        <div className="flex flex-wrap gap-4 items-end bg-gray-50 p-4 rounded-lg">
-          <div className="flex-1 min-w-[200px]">
-            <label className="block text-sm font-semibold text-gray-700 mb-1">ทะเบียนรถ <span className="font-normal text-gray-500">(License Plate)</span></label>
+        <div className="flex flex-wrap gap-3 items-end bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <div className="flex-1 min-w-[180px]">
+            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ทะเบียนรถ (License Plate)</label>
             <input 
               type="text" 
               placeholder="เช่น 1กข 1234" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" 
+              className="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-800 text-sm outline-none" 
               value={licensePlate} 
               onChange={e => setLicensePlate(e.target.value)} 
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">ตั้งแต่วันที่ <span className="font-normal text-gray-500">(Start)</span></label>
+            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ตั้งแต่วันที่ (Start)</label>
             <input 
               type="date" 
-              className="p-2 border border-gray-300 rounded-md w-full" 
+              className="p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none" 
               value={startDate} 
               onChange={e => setStartDate(e.target.value)} 
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">ถึงวันที่ <span className="font-normal text-gray-500">(End)</span></label>
+            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ถึงวันที่ (End)</label>
             <input 
               type="date" 
-              className="p-2 border border-gray-300 rounded-md w-full" 
+              className="p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none" 
               value={endDate} 
               onChange={e => setEndDate(e.target.value)} 
             />
           </div>
-          <button onClick={() => handleSearch()} className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 font-semibold h-[42px] transition">
-            ค้นหา (Search)
+          <button onClick={() => handleSearch()} className="bg-slate-900 text-white px-6 py-2.5 rounded-xl hover:bg-slate-800 font-bold text-sm h-[42px] transition active:scale-95 shadow-md shadow-slate-900/10">
+            🔍 ค้นหา
           </button>
-          <button onClick={() => window.print()} className="bg-emerald-600 text-white px-6 py-2 rounded-md hover:bg-emerald-700 font-semibold h-[42px] transition shadow-sm" disabled={trips.length === 0}>
-            🖨️ พิมพ์เอกสาร (Print)
+          <button onClick={() => window.print()} className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl hover:bg-emerald-700 font-bold text-sm h-[42px] transition shadow-md shadow-emerald-600/20 active:scale-95 flex items-center gap-1.5" disabled={trips.length === 0}>
+            <span>🖨️</span> พิมพ์เอกสาร (Print)
           </button>
         </div>
       </div>
 
       {/* แบบฟอร์มเอกสาร (จะแสดงผลให้สวยงามเวลาพิมพ์) */}
       {searchedPlate && (
-        <div className="bg-white p-4 md:p-10 rounded-xl shadow-md border border-gray-200 print:shadow-none print:border-none print:p-0">
+        <div className="bg-white p-6 md:p-12 rounded-[2rem] shadow-sm border border-slate-200 print:shadow-none print:border-none print:p-0">
           
-          <div className="text-center mb-10 border-b-2 border-gray-800 pb-6">
-            <h1 className="text-3xl font-bold uppercase tracking-wider mb-1 text-gray-900">Travel & Expense Report</h1>
-            <h2 className="text-lg text-gray-500 mb-6">ใบสรุปค่าเดินทางและค่าใช้จ่าย</h2>
-            <div className="inline-block bg-gray-50 px-8 py-3 rounded-lg text-lg border border-gray-200 shadow-sm">
-              ทะเบียนรถ <span className="text-gray-500 text-sm">(License Plate)</span>: <span className="font-bold text-blue-700 text-xl ml-2">{searchedPlate}</span>
+          <div className="text-center mb-10 border-b-2 border-slate-900 pb-6 relative">
+            <div className="flex justify-center items-center gap-3 mb-3">
+              <img src="/mileage.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <div className="text-left">
+                <h1 className="text-2xl md:text-3xl font-black uppercase tracking-wider text-slate-900 leading-tight">Travel & Expense Report</h1>
+                <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Official Mileage Claim</p>
+              </div>
+            </div>
+            <h2 className="text-sm font-semibold text-slate-500 mb-4">ใบสรุปค่าเดินทางและค่าใช้จ่าย</h2>
+            
+            <div className="inline-block bg-slate-50 px-8 py-2.5 rounded-2xl text-base border border-slate-200">
+              ทะเบียนรถ <span className="text-slate-400 text-xs">(License Plate)</span>: <span className="font-black text-indigo-700 text-xl ml-2">{searchedPlate}</span>
             </div>
             {(searchedDateRange.start || searchedDateRange.end) && (
-              <p className="mt-4 text-sm text-gray-600 font-medium">
-                รอบบิล <span className="text-gray-400">(Period)</span>: {searchedDateRange.start ? formatDate(new Date(searchedDateRange.start)) : 'เริ่มต้น'} 
+              <p className="mt-3 text-xs text-slate-500 font-bold uppercase tracking-wider">
+                รอบบิล (Period): {searchedDateRange.start ? formatDate(new Date(searchedDateRange.start)) : 'เริ่มต้น'} 
                 {" - "} 
                 {searchedDateRange.end ? formatDate(new Date(searchedDateRange.end)) : 'ปัจจุบัน'}
               </p>
