@@ -78,7 +78,7 @@ export default function ReportPage() {
   }, 0);
 
   return (
-    <main className="max-w-5xl mx-auto p-4 md:p-8 font-sans text-slate-800">
+    <main className="max-w-5xl mx-auto p-4 md:p-8 font-sans text-slate-800 pb-32">
       
       {/* ส่วนค้นหาและปุ่มควบคุม (ซ่อนตอนพิมพ์) */}
       <div className="print:hidden mb-8 bg-white p-5 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
@@ -413,6 +413,31 @@ export default function ReportPage() {
           )}
         </div>
       )}
+
+      {/* Bottom Navigation Bar (ซ่อนตอนพิมพ์) */}
+      <nav className="print:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200 px-6 pt-3 pb-6 flex justify-around items-center z-50 shadow-[0_-4px_25px_rgba(0,0,0,0.06)]">
+        <Link href="/" className="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition active:scale-95">
+          <span className="text-2xl mb-1">🚗</span>
+          <span className="text-[10px] font-bold">บันทึกทริป</span>
+        </Link>
+        <button className="flex flex-col items-center text-indigo-600 transition active:scale-95">
+          <span className="text-2xl mb-1">📊</span>
+          <span className="text-[10px] font-bold">รายงาน</span>
+        </button>
+        <button 
+          onClick={() => window.print()} 
+          disabled={trips.length === 0} 
+          className="flex flex-col items-center text-slate-400 hover:text-emerald-600 transition active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <span className="text-2xl mb-1">🖨️</span>
+          <span className="text-[10px] font-bold">สั่งพิมพ์</span>
+        </button>
+        <Link href="/admin" className="flex flex-col items-center text-slate-400 hover:text-slate-600 transition active:scale-95">
+          <span className="text-2xl mb-1">⚙️</span>
+          <span className="text-[10px] font-bold">แอดมิน</span>
+        </Link>
+      </nav>
+
     </main>
   );
 }
