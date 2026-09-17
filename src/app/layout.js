@@ -15,7 +15,6 @@ export const metadata = {
   title: "Mileage Tracker - Corporate Edition",
   description: "ระบบบันทึกการเดินทางและค่าใช้จ่ายสำหรับพนักงานขาย",
   manifest: "/manifest.json",
-  themeColor: "#0f172a",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -32,6 +31,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#0f172a",
 };
 
 export default function RootLayout({ children }) {
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
       lang="th"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-900 selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-slate-100 selection:bg-indigo-500 selection:text-white">
         {children}
       </body>
     </html>

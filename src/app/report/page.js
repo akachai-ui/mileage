@@ -78,60 +78,91 @@ export default function ReportPage() {
   }, 0);
 
   return (
-    <main className="max-w-5xl mx-auto p-4 md:p-8 font-sans text-gray-800">
+    <main className="max-w-5xl mx-auto p-4 md:p-8 font-sans text-slate-800">
       
       {/* ส่วนค้นหาและปุ่มควบคุม (ซ่อนตอนพิมพ์) */}
-      <div className="print:hidden mb-8 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-slate-100 p-1 flex-shrink-0">
+      <div className="print:hidden mb-8 bg-white p-5 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
+        
+        {/* Header แถวบน */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 pb-5 border-b border-slate-100">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 bg-slate-50 rounded-2xl shadow-xs border border-slate-200/80 p-1.5 flex-shrink-0 flex items-center justify-center">
               <img src="/mileage.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">ดึงรายงานเบิกจ่าย</h1>
-              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Expense & Audit Portal</p>
+              <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">รายงานเบิกจ่าย</h1>
+              <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-widest">Travel & Expense Report</p>
             </div>
           </div>
-          <Link href="/" className="text-xs bg-slate-100 text-slate-700 px-4 py-2.5 rounded-full font-bold hover:bg-slate-200 border border-slate-200 transition">
-            ← กลับหน้าแรก
+          <Link href="/" className="self-start sm:self-auto px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 border border-slate-200 transition flex items-center gap-1.5 shadow-xs">
+            <span>←</span> กลับหน้าหลัก (Home)
           </Link>
         </div>
-        <div className="flex flex-wrap gap-3 items-end bg-slate-50 p-4 rounded-2xl border border-slate-100">
-          <div className="flex-1 min-w-[180px]">
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ทะเบียนรถ (License Plate)</label>
-            <input 
-              type="text" 
-              placeholder="เช่น 1กข 1234" 
-              className="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-800 text-sm outline-none" 
-              value={licensePlate} 
-              onChange={e => setLicensePlate(e.target.value)} 
-            />
+
+        {/* ฟอร์มตัวกรอง */}
+        <div className="bg-slate-50/80 p-4 md:p-6 rounded-2xl border border-slate-100 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            
+            {/* 1. ทะเบียนรถ */}
+            <div>
+              <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">
+                🚘 ทะเบียนรถ (License Plate)
+              </label>
+              <input 
+                type="text" 
+                placeholder="เช่น 1กข 1234" 
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-800 text-sm outline-none shadow-xs" 
+                value={licensePlate} 
+                onChange={e => setLicensePlate(e.target.value)} 
+              />
+            </div>
+
+            {/* 2. ตั้งแต่วันที่ */}
+            <div>
+              <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">
+                📅 ตั้งแต่วันที่ (Start Date)
+              </label>
+              <input 
+                type="date" 
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none shadow-xs focus:ring-2 focus:ring-indigo-500" 
+                value={startDate} 
+                onChange={e => setStartDate(e.target.value)} 
+              />
+            </div>
+
+            {/* 3. ถึงวันที่ */}
+            <div>
+              <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">
+                📅 ถึงวันที่ (End Date)
+              </label>
+              <input 
+                type="date" 
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none shadow-xs focus:ring-2 focus:ring-indigo-500" 
+                value={endDate} 
+                onChange={e => setEndDate(e.target.value)} 
+              />
+            </div>
+
           </div>
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ตั้งแต่วันที่ (Start)</label>
-            <input 
-              type="date" 
-              className="p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none" 
-              value={startDate} 
-              onChange={e => setStartDate(e.target.value)} 
-            />
+
+          {/* ปุ่มค้นหา และ ปุ่มพิมพ์ */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button 
+              onClick={() => handleSearch()} 
+              className="flex-1 bg-slate-900 text-white p-3.5 rounded-xl hover:bg-slate-800 font-bold text-sm transition active:scale-95 shadow-md shadow-slate-900/10 flex items-center justify-center gap-2"
+            >
+              <span>🔍</span> ค้นหาข้อมูล (Search)
+            </button>
+            <button 
+              onClick={() => window.print()} 
+              className="flex-1 bg-emerald-600 text-white p-3.5 rounded-xl hover:bg-emerald-700 font-bold text-sm transition shadow-md shadow-emerald-600/20 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:active:scale-100" 
+              disabled={trips.length === 0}
+            >
+              <span>🖨️</span> พิมพ์เอกสาร (Print Report)
+            </button>
           </div>
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-1.5 ml-1">ถึงวันที่ (End)</label>
-            <input 
-              type="date" 
-              className="p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 outline-none" 
-              value={endDate} 
-              onChange={e => setEndDate(e.target.value)} 
-            />
-          </div>
-          <button onClick={() => handleSearch()} className="bg-slate-900 text-white px-6 py-2.5 rounded-xl hover:bg-slate-800 font-bold text-sm h-[42px] transition active:scale-95 shadow-md shadow-slate-900/10">
-            🔍 ค้นหา
-          </button>
-          <button onClick={() => window.print()} className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl hover:bg-emerald-700 font-bold text-sm h-[42px] transition shadow-md shadow-emerald-600/20 active:scale-95 flex items-center gap-1.5" disabled={trips.length === 0}>
-            <span>🖨️</span> พิมพ์เอกสาร (Print)
-          </button>
         </div>
+
       </div>
 
       {/* แบบฟอร์มเอกสาร (จะแสดงผลให้สวยงามเวลาพิมพ์) */}
@@ -140,7 +171,7 @@ export default function ReportPage() {
           
           <div className="text-center mb-10 border-b-2 border-slate-900 pb-6 relative">
             <div className="flex justify-center items-center gap-3 mb-3">
-              <img src="/mileage.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <img src="/mileage.png" alt="Logo" className="w-14 h-14 object-contain" />
               <div className="text-left">
                 <h1 className="text-2xl md:text-3xl font-black uppercase tracking-wider text-slate-900 leading-tight">Travel & Expense Report</h1>
                 <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Official Mileage Claim</p>
@@ -148,8 +179,8 @@ export default function ReportPage() {
             </div>
             <h2 className="text-sm font-semibold text-slate-500 mb-4">ใบสรุปค่าเดินทางและค่าใช้จ่าย</h2>
             
-            <div className="inline-block bg-slate-50 px-8 py-2.5 rounded-2xl text-base border border-slate-200">
-              ทะเบียนรถ <span className="text-slate-400 text-xs">(License Plate)</span>: <span className="font-black text-indigo-700 text-xl ml-2">{searchedPlate}</span>
+            <div className="inline-block bg-slate-50 px-8 py-2.5 rounded-2xl text-base border border-slate-200 shadow-xs">
+              ทะเบียนรถ <span className="text-slate-400 text-xs font-semibold">(License Plate)</span>: <span className="font-black text-indigo-700 text-xl ml-2">{searchedPlate}</span>
             </div>
             {(searchedDateRange.start || searchedDateRange.end) && (
               <p className="mt-3 text-xs text-slate-500 font-bold uppercase tracking-wider">
