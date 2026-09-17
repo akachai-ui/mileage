@@ -236,45 +236,81 @@ export default function Home() {
           <div className="space-y-5">
             
             {/* Vehicle Card */}
-            <div className="bg-slate-900 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden">
-              <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">พาหนะปัจจุบัน</p>
-                <p className="text-3xl font-bold tracking-tight mb-0.5">{currentUser.license_plate}</p>
-                <p className="text-indigo-300 text-sm font-medium flex items-center gap-1.5">
-                  👤 {currentUser.driver_name}
-                </p>
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 rounded-[2rem] p-6 text-white shadow-xl shadow-slate-900/15 relative overflow-hidden border border-slate-700/50">
+              <div className="absolute -right-6 -top-6 w-36 h-36 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="relative z-10 flex justify-between items-start">
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <p className="text-indigo-200 text-[10px] font-black uppercase tracking-widest">Active Vehicle</p>
+                  </div>
+                  <p className="text-3xl font-black tracking-tight mb-1">{currentUser.license_plate}</p>
+                  <p className="text-slate-300 text-xs font-semibold flex items-center gap-1.5">
+                    <span>👤</span> {currentUser.driver_name}
+                  </p>
+                </div>
+                {currentTripId && (
+                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-black rounded-full uppercase tracking-wider">
+                    กำลังเดินทาง
+                  </span>
+                )}
               </div>
             </div>
 
             {!currentTripId ? (
               /* 1. Start Trip */
-              <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center font-black text-lg">1</div>
-                  <h2 className="text-lg font-bold text-slate-900">เริ่มทริปใหม่</h2>
+              <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80">
+                <div className="flex items-center gap-3.5 mb-5 pb-3 border-b border-slate-100">
+                  <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-black text-lg shadow-xs">1</div>
+                  <div>
+                    <h2 className="text-lg font-black text-slate-900 leading-tight">เริ่มทริปใหม่</h2>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Start Mileage Log</p>
+                  </div>
                 </div>
                 
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1">เลขไมล์ตอนเริ่ม</label>
-                    <input 
-                      type="number" 
-                      placeholder="000000" 
-                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none font-bold text-xl transition-all" 
-                      value={startMileage} 
-                      onChange={e => setStartMileage(e.target.value)} 
-                    />
+                    <label className="block text-xs font-bold text-slate-600 mb-2 ml-1">
+                      🔢 เลขไมล์ตอนเริ่ม (Start Odometer)
+                    </label>
+                    <div className="relative">
+                      <input 
+                        type="number" 
+                        placeholder="กรอกเลขไมล์บนหน้าปัด" 
+                        className="w-full p-4 pr-14 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none font-black text-xl text-slate-800 transition-all" 
+                        value={startMileage} 
+                        onChange={e => setStartMileage(e.target.value)} 
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                        km
+                      </span>
+                    </div>
                   </div>
                   
                   {startImageFile ? (
-                    <div className="flex items-center justify-center w-full h-24 border-2 border-indigo-500 bg-indigo-50 rounded-2xl text-indigo-700 font-bold text-sm shadow-inner" onClick={() => setStartImageFile(null)}>
-                      ✅ เลือกรูปแล้ว (แตะเพื่อเปลี่ยน)
+                    <div className="relative group rounded-2xl overflow-hidden border-2 border-indigo-500 bg-slate-900 shadow-md">
+                      <img 
+                        src={URL.createObjectURL(startImageFile)} 
+                        alt="Preview" 
+                        className="w-full h-44 object-cover opacity-90 group-hover:opacity-100 transition" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-between p-4">
+                        <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                          <span>✅</span> บันทึกรูปหน้าปัดแล้ว
+                        </span>
+                        <button 
+                          onClick={() => setStartImageFile(null)} 
+                          className="px-3 py-1 bg-white/20 hover:bg-rose-600 text-white rounded-lg text-xs font-bold backdrop-blur-md transition"
+                        >
+                          ถ่ายใหม่
+                        </button>
+                      </div>
                     </div>
                   ) : (
-                    <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-2xl text-indigo-600 font-bold active:bg-indigo-100 transition cursor-pointer">
-                      <span className="text-2xl mb-1">📸</span>
-                      <span className="text-sm">ถ่ายรูปหน้าปัดไมล์</span>
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-indigo-300 bg-indigo-50/40 hover:bg-indigo-50/80 rounded-2xl text-indigo-600 font-bold active:scale-[0.99] transition cursor-pointer">
+                      <span className="text-3xl mb-1">📸</span>
+                      <span className="text-sm font-black">แตะเพื่อถ่ายรูปหน้าปัดไมล์</span>
+                      <span className="text-[10px] text-indigo-400 font-semibold mt-0.5">(Start Odometer Photo)</span>
                       <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setStartImageFile(e.target.files[0])} />
                     </label>
                   )}
@@ -282,79 +318,136 @@ export default function Home() {
                   <button 
                     onClick={handleStartTrip} 
                     disabled={isProcessing || !startMileage || !startImageFile} 
-                    className="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 disabled:active:scale-100 shadow-md shadow-indigo-200"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-2xl font-black text-lg active:scale-95 transition-all disabled:opacity-40 disabled:active:scale-100 shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2"
                   >
-                    {isProcessing ? 'ประมวลผล...' : '🚗 เริ่มเดินทาง'}
+                    <span>{isProcessing ? '⏳' : '🚗'}</span>
+                    <span>{isProcessing ? 'กำลังบันทึก...' : 'เริ่มออกเดินทาง (Start Trip)'}</span>
                   </button>
                 </div>
               </div>
             ) : (
               <>
                 {/* 2. Expenses */}
-                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center font-black text-lg">2</div>
-                    <h2 className="text-lg font-bold text-slate-900">ค่าใช้จ่ายระหว่างทาง</h2>
+                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80">
+                  <div className="flex items-center gap-3.5 mb-5 pb-3 border-b border-slate-100">
+                    <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center font-black text-lg shadow-xs">2</div>
+                    <div>
+                      <h2 className="text-lg font-black text-slate-900 leading-tight">ค่าใช้จ่ายระหว่างทาง</h2>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Toll & Parking Expenses</p>
+                    </div>
                   </div>
                   
-                  <div className="space-y-3 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
-                    <div className="flex gap-2">
-                      <select className="flex-1 p-3 border border-slate-200 rounded-xl bg-white outline-none font-bold text-slate-700 text-sm" value={expenseType} onChange={e => setExpenseType(e.target.value)}>
+                  <div className="space-y-3.5 bg-slate-50/80 p-4.5 rounded-2xl border border-slate-100">
+                    <div className="flex gap-2.5">
+                      <select className="flex-1 p-3.5 border border-slate-200 rounded-xl bg-white outline-none font-bold text-slate-700 text-sm focus:ring-2 focus:ring-amber-500 shadow-xs" value={expenseType} onChange={e => setExpenseType(e.target.value)}>
                         <option value="toll">🛣️ ทางด่วน</option>
                         <option value="parking">🅿️ ที่จอดรถ</option>
-                        <option value="reception">🤝 รับรอง</option>
+                        <option value="reception">🤝 รับรองลูกค้า</option>
                       </select>
-                      <input type="number" placeholder="ยอดเงิน" className="w-1/3 p-3 border border-slate-200 rounded-xl bg-white outline-none font-bold text-amber-700 text-sm text-center" value={expenseAmount} onChange={e => setExpenseAmount(e.target.value)} />
+                      <div className="relative w-2/5">
+                        <input type="number" placeholder="ยอดเงิน" className="w-full p-3.5 pr-8 border border-slate-200 rounded-xl bg-white outline-none font-black text-amber-700 text-sm focus:ring-2 focus:ring-amber-500 shadow-xs text-right" value={expenseAmount} onChange={e => setExpenseAmount(e.target.value)} />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">฿</span>
+                      </div>
                     </div>
-                    <input type="text" placeholder="รายละเอียด (ถ้ามี)" className="w-full p-3 border border-slate-200 rounded-xl bg-white outline-none text-sm font-medium" value={expenseDesc} onChange={e => setExpenseDesc(e.target.value)} />
+                    
+                    <input type="text" placeholder="รายละเอียด เช่น ด่านอโศก (ถ้ามี)" className="w-full p-3 border border-slate-200 rounded-xl bg-white outline-none text-xs font-semibold focus:ring-2 focus:ring-amber-500 shadow-xs" value={expenseDesc} onChange={e => setExpenseDesc(e.target.value)} />
                     
                     {expenseImageFile ? (
-                      <div className="flex items-center justify-center w-full py-3 border-2 border-amber-500 bg-amber-50 rounded-xl text-amber-700 font-bold text-xs" onClick={() => setExpenseImageFile(null)}>
-                        ✅ แนบใบเสร็จแล้ว
+                      <div className="relative rounded-xl overflow-hidden border-2 border-amber-500 bg-slate-900 h-28 flex items-center justify-center">
+                        <img src={URL.createObjectURL(expenseImageFile)} alt="Receipt" className="w-full h-full object-cover opacity-80" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-between px-4">
+                          <span className="text-xs font-bold text-white">✅ แนบใบเสร็จแล้ว</span>
+                          <button onClick={() => setExpenseImageFile(null)} className="px-2.5 py-1 bg-white/20 hover:bg-rose-600 text-white rounded text-[11px] font-bold transition">เปลี่ยน</button>
+                        </div>
                       </div>
                     ) : (
-                      <label className="flex items-center justify-center w-full py-3 border-2 border-dashed border-amber-200 bg-amber-50/50 rounded-xl text-amber-600 font-bold text-xs active:bg-amber-100 transition cursor-pointer">
-                        📸 ถ่ายรูปใบเสร็จ
+                      <label className="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-dashed border-amber-300 bg-amber-50/50 hover:bg-amber-100/50 rounded-xl text-amber-700 font-bold text-xs active:scale-[0.99] transition cursor-pointer">
+                        <span className="text-lg">📸</span>
+                        <span>แนบรูปใบเสร็จ (Receipt Photo)</span>
                         <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setExpenseImageFile(e.target.files[0])} />
                       </label>
                     )}
 
-                    <button onClick={handleAddExpense} disabled={isProcessing} className="w-full bg-slate-800 text-white p-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50 mt-1">
-                      {isProcessing ? 'รอสักครู่...' : '+ เพิ่มรายการ'}
+                    <button onClick={handleAddExpense} disabled={isProcessing} className="w-full bg-slate-900 hover:bg-slate-800 text-white p-3.5 rounded-xl font-black text-sm active:scale-95 transition-transform disabled:opacity-50 mt-1 shadow-md shadow-slate-900/10">
+                      {isProcessing ? '⏳ กำลังบันทึก...' : '+ บันทึกค่าใช้จ่าย (Add Expense)'}
                     </button>
                   </div>
                 </div>
 
                 {/* 3. End Trip */}
-                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center font-black text-lg">3</div>
-                    <h2 className="text-lg font-bold text-slate-900">จบทริป</h2>
+                <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80">
+                  <div className="flex items-center gap-3.5 mb-5 pb-3 border-b border-slate-100">
+                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center font-black text-lg shadow-xs">3</div>
+                    <div>
+                      <h2 className="text-lg font-black text-slate-900 leading-tight">จบทริป</h2>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Finish & Calculate</p>
+                    </div>
                   </div>
                   
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1">เลขไมล์ตอนจบ</label>
-                      <input 
-                        type="number" 
-                        placeholder={`> ${startMileage}`} 
-                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-xl font-bold transition-all" 
-                        value={endMileage} 
-                        onChange={e => setEndMileage(e.target.value)} 
-                      />
+                      <div className="flex justify-between items-center mb-1.5 ml-1">
+                        <label className="text-xs font-bold text-slate-600">
+                          🏁 เลขไมล์ตอนจบ (End Odometer)
+                        </label>
+                        <span className="text-[11px] text-slate-400 font-bold">
+                          ไมล์เริ่ม: <span className="text-slate-700 font-black">{startMileage}</span>
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <input 
+                          type="number" 
+                          placeholder={`ต้องมากกว่า ${startMileage}`} 
+                          className="w-full p-4 pr-14 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-black text-xl text-slate-800 transition-all" 
+                          value={endMileage} 
+                          onChange={e => setEndMileage(e.target.value)} 
+                        />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                          km
+                        </span>
+                      </div>
+
+                      {/* Dynamic Live Distance Calculator */}
+                      {endMileage && Number(endMileage) >= Number(startMileage) && (
+                        <div className="mt-2.5 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl flex items-center justify-between text-xs font-black animate-fade-in">
+                          <span>✨ ระยะทางในทริปนี้:</span>
+                          <span className="text-base text-emerald-700 font-black">
+                            +{Number(endMileage) - Number(startMileage)} กม.
+                          </span>
+                        </div>
+                      )}
+
                       {endMileage && Number(endMileage) < Number(startMileage) && (
-                        <p className="text-rose-500 text-xs mt-2 font-bold flex items-center gap-1 ml-1">⚠️ ต้องมากกว่าตอนเริ่ม ({startMileage})</p>
+                        <p className="text-rose-500 text-xs mt-2 font-black flex items-center gap-1.5 bg-rose-50 p-2.5 rounded-xl border border-rose-100">
+                          <span>⚠️</span> เลขไมล์ตอนจบต้องมากกว่าตอนเริ่ม ({startMileage})
+                        </p>
                       )}
                     </div>
                     
                     {endImageFile ? (
-                      <div className="flex items-center justify-center w-full h-24 border-2 border-emerald-500 bg-emerald-50 rounded-2xl text-emerald-700 font-bold text-sm" onClick={() => setEndImageFile(null)}>
-                        ✅ เลือกรูปแล้ว (แตะเพื่อเปลี่ยน)
+                      <div className="relative group rounded-2xl overflow-hidden border-2 border-emerald-500 bg-slate-900 shadow-md">
+                        <img 
+                          src={URL.createObjectURL(endImageFile)} 
+                          alt="End Preview" 
+                          className="w-full h-44 object-cover opacity-90 group-hover:opacity-100 transition" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-between p-4">
+                          <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>✅</span> บันทึกรูปหน้าปัดตอนจบแล้ว
+                          </span>
+                          <button 
+                            onClick={() => setEndImageFile(null)} 
+                            className="px-3 py-1 bg-white/20 hover:bg-rose-600 text-white rounded-lg text-xs font-bold backdrop-blur-md transition"
+                          >
+                            ถ่ายใหม่
+                          </button>
+                        </div>
                       </div>
                     ) : (
-                      <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-emerald-200 bg-emerald-50/50 rounded-2xl text-emerald-600 font-bold active:bg-emerald-100 transition cursor-pointer">
-                        <span className="text-2xl mb-1">📸</span>
-                        <span className="text-sm">ถ่ายรูปหน้าปัดไมล์</span>
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-emerald-300 bg-emerald-50/40 hover:bg-emerald-50/80 rounded-2xl text-emerald-600 font-bold active:scale-[0.99] transition cursor-pointer">
+                        <span className="text-3xl mb-1">📸</span>
+                        <span className="text-sm font-black">แตะเพื่อถ่ายรูปหน้าปัดไมล์ (ตอนจบ)</span>
+                        <span className="text-[10px] text-emerald-500 font-semibold mt-0.5">(End Odometer Photo)</span>
                         <input type="file" accept="image/*" capture="environment" className="hidden" onChange={e => setEndImageFile(e.target.files[0])} />
                       </label>
                     )}
@@ -362,9 +455,10 @@ export default function Home() {
                     <button 
                       onClick={handleEndTrip} 
                       disabled={isProcessing || !endMileage || !endImageFile || Number(endMileage) < Number(startMileage)} 
-                      className="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 disabled:bg-slate-300 disabled:active:scale-100 shadow-md shadow-emerald-200"
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-2xl font-black text-lg active:scale-95 transition-all disabled:opacity-40 disabled:bg-slate-300 disabled:shadow-none disabled:active:scale-100 shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2"
                     >
-                      {isProcessing ? 'บันทึกข้อมูล...' : '🏁 จบทริป'}
+                      <span>{isProcessing ? '⏳' : '🏁'}</span>
+                      <span>{isProcessing ? 'กำลังบันทึกข้อมูล...' : 'บันทึกและจบทริป (Finish Trip)'}</span>
                     </button>
                   </div>
                 </div>

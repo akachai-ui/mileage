@@ -33,13 +33,13 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center transition active:scale-95 ${
+              className={`flex flex-col items-center py-1.5 px-4.5 rounded-2xl transition-all active:scale-90 ${
                 isActive
-                  ? "text-indigo-600 font-black"
+                  ? "text-indigo-600 bg-indigo-50/90 font-black shadow-xs"
                   : "text-slate-400 hover:text-slate-600 font-bold"
               }`}
             >
-              <span className="text-2xl mb-1">{item.icon}</span>
+              <span className="text-xl mb-0.5">{item.icon}</span>
               <span className="text-[11px] tracking-tight">{item.name}</span>
             </Link>
           );
